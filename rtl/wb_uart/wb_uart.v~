@@ -60,6 +60,25 @@ uart #(
 	.tx_busy(   tx_busy  )
 );
 
+uart #(
+	.freq_hz(   clk_freq ),
+	.baud(      baud     )
+) uart1 (
+	.clk(       clk      ),
+	.reset(     reset    ),
+	//
+	.uart_rxd(  uart_rxd ),
+	.uart_txd(  uart_txd ),
+	//
+	.rx_data(   rx_data  ),
+	.rx_avail(  rx_avail ),
+	.rx_error(  rx_error ),
+	.rx_ack(    rx_ack   ),
+	.tx_data(   tx_data  ),
+	.tx_wr(     tx_wr    ),
+	.tx_busy(   tx_busy  )
+)
+;
 
 /*uart #(
 	.freq_hz(   clk_freq ),

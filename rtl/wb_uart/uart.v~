@@ -11,8 +11,6 @@ module uart #(
 	// UART lines
 	input              uart_rxd,
 	output reg         uart_txd,
-//	input              uart_rxd1,
-//	output reg         uart_txd1,
 	// 
 	output reg [7:0]   rx_data,
 	output reg         rx_avail,

@@ -22,8 +22,8 @@ module system
 	// UART
 	input             uart_rxd, 
 	output            uart_txd,
-	output		  uart_txd1,
-	input		  uart_rxd1,
+	input		  uart_txd1,
+	output		  uart_rxd1,
 	// SPI
 	input             spi_miso, 
 	output            spi_mosi,
