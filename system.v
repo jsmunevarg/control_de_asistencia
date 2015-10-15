@@ -17,6 +17,7 @@ module system
 	// Debug 
 	output            led,
 	output 		  led1,	
+	output		  led2,
 	input             rst,
 
 	// UART
@@ -485,6 +486,7 @@ assign uart1_rxd = uart_rxd1;
 
 assign led       = ~uart_txd;
 assign led1       = ~uart_txd1;
+assign led2	  =~spi_mosi;
 
 assign spi_mosi  = spi0_mosi;
 assign spi0_miso = spi_miso;

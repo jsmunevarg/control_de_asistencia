@@ -4,6 +4,23 @@
 
 #include "soc-hw.h"
 
+int main (int argc, char **argv)
+{
+	uint32_t x='0';
+	x=uart_getchar0();
+	uart_putchar1(x);
+	x=uart_getchar1();
+	uart_putchar0(x);
+
+			
+}
+
+
+/*
+
+
+
+
 inline void writeint(uint32_t val)
 {
 	uint32_t i, digit;
@@ -154,11 +171,11 @@ int main()
 		uart_putchar(' ');    
 		writeint(*p);
 	}
-*/
+
 
 	uart_putstr0("Entering Echo Test...\n");
 	while (1) {
 	   uart_putchar0(uart_getchar0());
 	}
 }
-
+*/

@@ -1,11 +1,11 @@
 //! **************************************************************************
-// Written by: Map P.20131013 on Thu Oct 08 09:34:53 2015
+// Written by: Map P.20131013 on Wed Oct 14 15:44:17 2015
 //! **************************************************************************
 
 SCHEMATIC START;
 COMP "spi_mosi" LOCATE = SITE "R2" LEVEL 1;
 COMP "rst" LOCATE = SITE "C12" LEVEL 1;
-COMP "uart_txd1" LOCATE = SITE "T18" LEVEL 1;
+COMP "uart_txd1" LOCATE = SITE "E18" LEVEL 1;
 COMP "spi_miso" LOCATE = SITE "P2" LEVEL 1;
 COMP "uart_txd" LOCATE = SITE "D4" LEVEL 1;
 COMP "clk" LOCATE = SITE "E3" LEVEL 1;
@@ -14,6 +14,7 @@ COMP "uart_rxd" LOCATE = SITE "C4" LEVEL 1;
 COMP "led" LOCATE = SITE "H17" LEVEL 1;
 COMP "uart_rxd1" LOCATE = SITE "G17" LEVEL 1;
 COMP "led1" LOCATE = SITE "K15" LEVEL 1;
+COMP "led2" LOCATE = SITE "J13" LEVEL 1;
 PIN bram0/Mram_ram_pins<63> = BEL "bram0/Mram_ram" PINNAME CLKARDCLKU;
 PIN bram0/Mram_ram_pins<62> = BEL "bram0/Mram_ram" PINNAME CLKARDCLKL;
 TIMEGRP sys_clk = BEL "conbus0/conbus_arb/state_FSM_FFd3" BEL

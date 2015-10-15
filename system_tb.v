@@ -19,6 +19,7 @@ reg        clk;
 reg        rst;
 wire       led;
 wire	   led1;
+wire       led2;
 
 //----------------------------------------------------------------------------
 // UART STUFF (testbench uart, simulating a comm. partner)
@@ -27,6 +28,15 @@ wire         uart_rxd;
 wire         uart_txd;
 wire         uart_rxd1;
 wire         uart_txd1;
+
+//----------------------------------------------------------------------------
+// SPI 
+//----------------------------------------------------------------------------
+wire         spi_mosi;
+wire         spi_miso;
+wire         spi_clk;
+
+
 
 //----------------------------------------------------------------------------
 // Device Under Test 
@@ -45,7 +55,11 @@ system #(
 	.uart_txd(  uart_txd  ),
 	//uart1
 	.uart_rxd1(  uart_rxd1  ),
-	.uart_txd1(  uart_txd1  )
+	.uart_txd1(  uart_txd1  ),
+	// SPI
+	spi_miso(spi_miso),
+	spi_mosi(spi_mosi),
+	spi_clk(clk_clk)
 );
 
 /* Clocking device */
