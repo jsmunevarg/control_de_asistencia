@@ -3,8 +3,8 @@
 uart_t  *uart0  = (uart_t *)   0x20000000;
 timer_t *timer0 = (timer_t *)  0x30000000;
 gpio_t  *gpio0  = (gpio_t *)   0x40000000;
-uart_t  *uart1  = (uart_t *)   0x60000000;
-spi_t   *spi0   = (spi_t *)    0x50000000;
+uart_t  *uart1  = (uart_t *)   0x50000000;
+spi_t   *spi0   = (spi_t *)    0x60000000;
 //i2c_t   *i2c0   = (i2c_t *)    0x70000000;
 
 isr_ptr_t isr_table[32];
@@ -12,13 +12,13 @@ isr_ptr_t isr_table[32];
 void prueba()
 {
 	   uart0->rxtx=30;
-	   timer0->tcr0 = 0xAA;
-	   gpio0->ctrl=0x55;
 	   spi0->rxtx=1;
 	   spi0->nop1=2;
 	   spi0->cs=3;
 	   spi0->divisor=4;
 	   spi0->nop2=5;
+	   timer0->tcr0 = 0xAA;
+	   gpio0->ctrl=0x55;
 
 }
 void tic_isr();

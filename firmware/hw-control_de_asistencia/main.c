@@ -6,13 +6,15 @@
 
 int main (int argc, char **argv)
 {
-	uint32_t x='0';
-	x=uart_getchar0();
-	uart_putchar1(x);
-	x=uart_getchar1();
+	uint32_t x='1';
+	//x=uart_getchar0();
+for(;;){
+        prueba();
 	uart_putchar0(x);
+	uart_putchar1(x);
+	//x=uart_getchar1();
 
-			
+}			
 }
 
 
