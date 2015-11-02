@@ -12,11 +12,12 @@ isr_ptr_t isr_table[32];
 void prueba()
 {
 	   uart0->rxtx=30;
+	   uart1->rxtx=30;
 	   spi0->rxtx=1;
-	   spi0->nop1=2;
+	   spi0->status=2;
 	   spi0->cs=3;
 	   spi0->divisor=4;
-	   spi0->nop2=5;
+	   spi0->nop=5;
 	   timer0->tcr0 = 0xAA;
 	   gpio0->ctrl=0x55;
 
@@ -162,6 +163,17 @@ void uart_putstr1(char *str)
 		uart_putchar1(*c);
 		c++;
 	}
+}
+
+
+char spi_putget(char c)
+{
+        spi0->cs=1;
+	while (spi0->status & SPI_RUN) ;
+	spi0->rxtx = c;
+	while (spi0->status & SPI_RUN) ;
+        spi0->cs=0;
+        return spi0->rxtx;
 }
 
 

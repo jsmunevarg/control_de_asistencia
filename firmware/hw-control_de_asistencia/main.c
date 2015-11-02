@@ -3,16 +3,31 @@
  */
 
 #include "soc-hw.h"
+#include "cam.h"
 
 int main (int argc, char **argv)
 {
 	uint32_t x='1';
+	uint32_t y='2';
 	//x=uart_getchar0();
 for(;;){
-        prueba();
-	uart_putchar0(x);
-	uart_putchar1(x);
-	//x=uart_getchar1();
+	
+getversioncommand(x);
+	//pppp();	
+
+	//x=uart_getchar0();
+	//uart_putchar1(x);
+	//y=uart_getchar1();
+	//uart_putchar0(y);
+	//uart_putchar0(x);
+	//uart_putchar1(x);
+	//char val=spi_putget(0xaa);
+	//uart_putchar0(val);
+
+	//x=uart_getchar1();	
+	//y=uart_getchar1();
+	//y++;
+	//uart_putchar0(y);
 
 }			
 }
@@ -158,7 +173,7 @@ int main()
 	}
 
 
-/*
+
 	uart_putstr( "Memory Dump: " );
 	uint32_t *start = (uint32_t *)0x40000000;
 	uint32_t *end   = (uint32_t *)0x40000100;

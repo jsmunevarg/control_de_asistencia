@@ -21,8 +21,11 @@ main.o: main.c
 soc-hw.o: soc-hw.c
 	$(LM32_CC) $(CFLAGS) -c soc-hw.c
 
-image: crt0ram.o main.o soc-hw.o 
-	$(LM32_LD) $(LDFLAGS) -Map image.map -N -o image crt0ram.o main.o soc-hw.o
+cam.o: cam.c
+	$(LM32_CC) $(CFLAGS) -c cam.c
+
+image: crt0ram.o main.o soc-hw.o cam.o
+	$(LM32_LD) $(LDFLAGS) -Map image.map -N -o image crt0ram.o main.o soc-hw.o cam.o
 
 image.lst: image
 	$(LM32_OBJDUMP) -h -S $< > $@

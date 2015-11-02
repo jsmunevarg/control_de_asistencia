@@ -105,19 +105,20 @@ char uart_getchar1();
 /***************************************************************************
  * SPI0
  */
+#define SPI_RUN   0x01                    //RUN SPI
 
 typedef struct {
    volatile uint32_t rxtx;
-   volatile uint32_t nop1;
+   volatile uint32_t status;
    volatile uint32_t cs;
-   volatile uint32_t nop2;
+   volatile uint32_t nop;
    volatile uint32_t divisor;
 } spi_t;
 
 void spi_init();
 void spi_putchar(char c);
 char spi_getchar();
-
+char spi_putget(char c);
 
 /***************************************************************************
  * Pointer to actual components
