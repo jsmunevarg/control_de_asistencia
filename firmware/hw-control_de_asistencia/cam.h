@@ -8,6 +8,8 @@
 
 #define SERIALNUM  0
 
+#define CONS 0x01
+
 #define COMMANDSEND 0x56
 #define COMMANDREPLY  0x76
 #define COMMANDEND  0x00

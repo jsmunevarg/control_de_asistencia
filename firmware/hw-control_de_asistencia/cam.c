@@ -2,29 +2,54 @@
 #include "cam.h"
 #include "soc-hw.h"
 
+/*
 void getversioncommand(char c)
 {
 	uint32_t x='0';	
 
 	uart_putchar1(COMMANDSEND);
+	//msleep(5);
 	uart_putchar1(SERIALNUM);
+	//msleep(5);
 	uart_putchar1(CMD_GETVERSION);
-	uart_putchar1(COMMANDEND);
-	x=uart_getchar1();
-	uart_putchar0(x);
+	//msleep(5);	
+	uart_putchar1(COMMANDEND);	
+	//x=uart_getchar1();
+	//uart_putchar0(uart_getchar1());
+	//msleep(1000);
 //  esta es la parte para probar si los comamando si llegan a la camara 
+}
+*/
+
+void takephotocommand(char c)
+{
+	uint32_t x='0';	
+
+	uart_putchar1(COMMANDSEND);
+	//msleep(5);
+	uart_putchar1(SERIALNUM);
+	//msleep(5);
+	uart_putchar1(CMD_TAKEPHOTO);
+	//msleep(5);
+	uart_putchar1(CONS);	
+	uart_putchar1(FBUF_STOPCURRENTFRAME);	
+	//x=uart_getchar1();
+	//uart_putchar0(uart_getchar1());
+	//msleep(1000);
+	
 }
 
 void pppp()
 {
 // esta es mi version para la recepcion de lo que manda la camara; la funcion esta comentariada en el main
-	int8_t  *p;
-	int8_t arreglo[10];
-	int8_t start='0';
-    	int8_t	size='3';
+		
+	int32_t  *p;
+	int32_t arreglo[19201];
+	int8_t start=0;
+    	int32_t	size=19201;
 	int8_t i=0;
 
-/*
+	/*
 	for (p = (int8_t *) start; p < (int8_t *) (start+size); p++)
 	{
 		*p = uart_getchar1();
@@ -33,7 +58,8 @@ void pppp()
     	for (p = (int8_t *) start; p < (int8_t *) (start+size); p++)
 	{
 		uart_putchar0( *p );
-	} */
+	} 
+*/
    
 for (i = start; i < (start+size); i++)
 	{
@@ -44,7 +70,7 @@ for (i = start; i < (start+size); i++)
 for (i =  start; i <  (start+size); i++)
 	{
 		uart_putchar0( *(p+i) );
-	}  			
+	}			
 }
 
 
