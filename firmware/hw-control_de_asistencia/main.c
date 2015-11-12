@@ -10,18 +10,25 @@ int main (int argc, char **argv)
 	uint32_t x='1';
 	uint32_t y='2';
 	//x=uart_getchar0();
-	uart_putchar1(COMMANDSEND);
-	uart_putchar1(SERIALNUM);
-	uart_putchar1(CMD_RESET);
-	uart_putchar1(COMMANDEND);
-
-for(;;){
+	
+//for (;;){
 	
 	//Prueba Camara
-	takephotocommand(x);
-	//getversioncommand(x);
-	pppp();	
+	//takephotocommand(x);
+	resetcommand(x);
+	//msleep(1000);
+	//j=0;
+	//pppp();
+	//msleep(1000);
+	getversioncommand(x);
+	getversioncommand(x);
+	//j=1;
+	//msleep(3000);
 
+
+
+	
+//}
 	//Prueba Bluetooth
 	//x=uart_getchar0();
 	//uart_putchar1(x);
@@ -37,7 +44,7 @@ for(;;){
 	//y++;
 	//uart_putchar0(y);
 
-	}			
+			
 }
 
 

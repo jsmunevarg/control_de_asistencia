@@ -2,11 +2,40 @@
 #include "cam.h"
 #include "soc-hw.h"
 
+void resetcommand(char c){
+
+	uart_putchar1(COMMANDSEND);
+	uart_putchar1(SERIALNUM);
+	uart_putchar1(CMD_RESET);
+	uart_putchar1(COMMANDEND);
+//msleep(3000);*/
+/*	
+	int32_t arreglo[10];
+    	int32_t	size=11;
+    	//int32_t	size_1=9;
+	int8_t i=0;
+	int8_t x=0;
+
+
+		for (i =  0; i <  (size); i++){
+				x=uart_getchar0();
+				uart_putchar1(x);
+				arreglo[i]=uart_getchar1();
+		}
+*/
+		//if (arreglo[0]==0x76 && arreglo[2]==0x26){
+		
+						//uart_putchar0(0x20);
+			//}
 /*
+		for (i =  0; i <  (size); i++){
+				uart_putchar0(arreglo[i]);
+		}
+*/
+}
+
 void getversioncommand(char c)
 {
-	uint32_t x='0';	
-
 	uart_putchar1(COMMANDSEND);
 	//msleep(5);
 	uart_putchar1(SERIALNUM);
@@ -16,11 +45,31 @@ void getversioncommand(char c)
 	uart_putchar1(COMMANDEND);	
 	//x=uart_getchar1();
 	//uart_putchar0(uart_getchar1());
-	//msleep(1000);
+//	msleep(3000);
+	
+	uint32_t arreglo_get[15];
+    	uint32_t	size_get=16;
+	uint32_t i_get=0;
+
+for (i_get =  0; i_get <  (size_get); i_get++){
+		arreglo_get[i_get]=0;
+}
+
+for (i_get =  0; i_get <  (size_get); i_get++){
+		arreglo_get[i_get]=uart_getchar1();
+}
+
+//if (arreglo_get[0]==0x76 && arreglo_get[2]==0x11){
+		
+		for (i_get =  0; i_get <  (size_get); i_get++){
+		uart_putchar0(arreglo_get[i_get]);
+			}
+	//}
+
 //  esta es la parte para probar si los comamando si llegan a la camara 
 }
-*/
 
+/*
 void takephotocommand(char c)
 {
 	uint32_t x='0';	
@@ -38,17 +87,19 @@ void takephotocommand(char c)
 	//msleep(1000);
 	
 }
-
+*/
 void pppp()
 {
 // esta es mi version para la recepcion de lo que manda la camara; la funcion esta comentariada en el main
-		
+	/*	
 	int32_t  *p;
-	int32_t arreglo[19201];
+	int32_t arreglo[30];
 	int8_t start=0;
-    	int32_t	size=19201;
+    	int32_t	size=29;
+    	//int32_t	size_1=9;
 	int8_t i=0;
-
+	//int8_t j=0;
+*/
 	/*
 	for (p = (int8_t *) start; p < (int8_t *) (start+size); p++)
 	{
@@ -60,17 +111,50 @@ void pppp()
 		uart_putchar0( *p );
 	} 
 */
-   
-for (i = start; i < (start+size); i++)
+
+//msleep(1000);
+
+/*
+for (j =  start; j <  (start+size_1); j++)
 	{
 
-		arreglo[i]=uart_getchar1();
-	}
-	p = &arreglo[0];
-for (i =  start; i <  (start+size); i++)
+		for (i =  start; i <  (start+size); i++)
+			{
+		arreglo[j][i]=uart_getchar1();
+
+			}
+}
+  
+
+for (j =  start; j <  (start+size_1); j++)
 	{
+p = &arreglo[j][0];
+		for (i =  start; i <  (start+size); i++)
+			{
 		uart_putchar0( *(p+i) );
-	}			
+
+			}
+}
+
+
+for (j =  start; j <  (start+size_1); j++)
+	{
+p = &arreglo[j][0];
+		for (i =  start; i <  (start+size); i++)
+			{
+		arreglo[j][i]=0;
+
+			}
+}
+
+*/
+
+//msleep(1000);
+
+//p = &arreglo[0]; 
+
+		
+	
 }
 
 

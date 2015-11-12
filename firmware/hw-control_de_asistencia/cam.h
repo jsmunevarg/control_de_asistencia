@@ -5,7 +5,7 @@
 #ifndef CAM_H
 #define CAM_H
 
-
+//Page 1:Command   CAMARA
 #define SERIALNUM  0
 
 #define CONS 0x01
@@ -27,6 +27,8 @@
 
 #define RAM_START 0x40000000
 #define RAM_SIZE  0x04000000
+
+
 
 void getversioncommand(char c); 
 void resetcommand(char c);
