@@ -29,12 +29,17 @@
 #define RAM_SIZE  0x04000000
 
 
+#define SIZE_BUFFCAM 256 //16x16
+extern int buffercam[SIZE_BUFFCAM];
 
 void getversioncommand(char c); 
 void resetcommand(char c);
 void takephotocommand(char c); 
 void getbufflencommand(char c);
 void pppp();
+
+
+
 
 
 

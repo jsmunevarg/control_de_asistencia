@@ -2,72 +2,61 @@
 #include "cam.h"
 #include "soc-hw.h"
 
+
+
+int buffercam[SIZE_BUFFCAM];
+
+void buffercam_clear()
+{
+	uint32_t i;
+    for (i=0; i< SIZE_BUFFCAM;i++)
+    	buffercam[i]=0;
+
+}
+
+void buffercam_upload(uint32_t size)
+{
+	uint32_t i;
+    for (i=0; i< size;i++)
+    	buffercam[i]=uart_getchar0();
+}
+
+void buffercam_uartsend(uint32_t size)
+{
+	uint32_t i;
+    for (i=0; i< size;i++)
+    	uart_putchar0(buffercam[i]);
+}
+
+
+
 void resetcommand(char c){
 
 	uart_putchar1(COMMANDSEND);
 	uart_putchar1(SERIALNUM);
 	uart_putchar1(CMD_RESET);
 	uart_putchar1(COMMANDEND);
-//msleep(3000);*/
-/*	
-	int32_t arreglo[10];
-    	int32_t	size=11;
-    	//int32_t	size_1=9;
-	int8_t i=0;
-	int8_t x=0;
-
-
-		for (i =  0; i <  (size); i++){
-				x=uart_getchar0();
-				uart_putchar1(x);
-				arreglo[i]=uart_getchar1();
-		}
-*/
-		//if (arreglo[0]==0x76 && arreglo[2]==0x26){
-		
-						//uart_putchar0(0x20);
-			//}
-/*
-		for (i =  0; i <  (size); i++){
-				uart_putchar0(arreglo[i]);
-		}
-*/
 }
+
 
 void getversioncommand(char c)
 {
-	uart_putchar1(COMMANDSEND);
-	//msleep(5);
-	uart_putchar1(SERIALNUM);
-	//msleep(5);
-	uart_putchar1(CMD_GETVERSION);
-	//msleep(5);	
-	uart_putchar1(COMMANDEND);	
-	//x=uart_getchar1();
-	//uart_putchar0(uart_getchar1());
-//	msleep(3000);
-	
-	uint32_t arreglo_get[15];
-    	uint32_t	size_get=16;
-	uint32_t i_get=0;
 
-for (i_get =  0; i_get <  (size_get); i_get++){
-		arreglo_get[i_get]=0;
+	buffercam_clear();
+
+	uart_putchar0(COMMANDSEND);
+	uart_putchar0(SERIALNUM);
+	uart_putchar0(CMD_GETVERSION);
+	uart_putchar0(COMMANDEND);
+
+	buffercam_upload(10);
+	buffercam_uartsend(10);
 }
 
-for (i_get =  0; i_get <  (size_get); i_get++){
-		arreglo_get[i_get]=uart_getchar1();
-}
 
-//if (arreglo_get[0]==0x76 && arreglo_get[2]==0x11){
-		
-		for (i_get =  0; i_get <  (size_get); i_get++){
-		uart_putchar0(arreglo_get[i_get]);
-			}
-	//}
 
-//  esta es la parte para probar si los comamando si llegan a la camara 
-}
+
+
 
 /*
 void takephotocommand(char c)
