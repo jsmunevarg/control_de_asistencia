@@ -5,6 +5,7 @@
 
 
 int buffercam[SIZE_BUFFCAM];
+int l;
 
 void buffercam_clear()
 {
@@ -18,7 +19,7 @@ void buffercam_upload(uint32_t size)
 {
 	uint32_t i;
     for (i=0; i< size;i++)
-    	buffercam[i]=uart_getchar0();
+    	buffercam[i]=uart_getchar1();
 }
 
 void buffercam_uartsend(uint32_t size)
@@ -44,19 +45,117 @@ void getversioncommand(char c)
 
 	buffercam_clear();
 
-	uart_putchar0(COMMANDSEND);
-	uart_putchar0(SERIALNUM);
-	uart_putchar0(CMD_GETVERSION);
-	uart_putchar0(COMMANDEND);
+	uart_putchar1(COMMANDSEND);
+	uart_putchar1(SERIALNUM);
+	uart_putchar1(CMD_GETVERSION);
+	uart_putchar1(COMMANDEND);
 
-	buffercam_upload(10);
-	buffercam_uartsend(10);
+	buffercam_upload(15);
+	buffercam_uartsend(15);
+}
+//take_picture
+void takephotocommand(char c)
+{
+	uint32_t x='0';	
+
+	uart_putchar1(COMMANDSEND);
+	uart_putchar1(SERIALNUM);
+	uart_putchar1(CMD_TAKEPHOTO);
+	uart_putchar1(CONS);	
+	uart_putchar1(FBUF_STOPCURRENTFRAME);	
+
+	buffercam_upload(5);
+	buffercam_uartsend(5);
+	
+}
+//read_size,,, confirmar si tomo la foto (buf[0]==0x76 && buf[2]==0x34)
+//hay info importante XL,REVISAR
+int getbufflencommand()
+{
+	uint32_t bytes,  x='0';	
+	
+	uart_putchar1(COMMANDSEND);
+	uart_putchar1(SERIALNUM);
+	uart_putchar1(CMD_GETBUFFLEN);
+	uart_putchar1(CONS);	
+	uart_putchar1(FBUF_CURRENTFRAME);	
+
+	buffercam_upload(9);
+	buffercam_uartsend(9);
+	
+	bytes=buffercam[5];
+	bytes=bytes<<8;	
+	bytes=buffercam[6];
+	bytes=bytes<<8;	
+	bytes=buffercam[7];
+	bytes=bytes<<8;	
+	bytes=buffercam[8];
+	bytes=bytes<<8;	
+
+	return bytes;
+        //uint32_t sizeX;
+	//sizeX= (buffercam[7]<<8) +buffercam[8];
+	
+}
+//export_buf
+void readphotocommand(int  bytes)
+{
+	uint32_t i,n;
+	
+int inc = 200;
+int addr =0;
+int chunk;
+
+	
+	while( addr < bytes ){
+
+		chunk = inc;
+                if (chunk > (bytes-addr)) 
+                  chunk = bytes-addr; 
+		uart_putchar1(COMMANDSEND);
+		uart_putchar1(SERIALNUM);
+		uart_putchar1(CMD_READBUFF);
+		uart_putchar1(CONS_1);	
+		uart_putchar1(FBUF_CURRENTFRAME);	
+		uart_putchar1(CONS_2);	
+		uart_putchar1((addr >> 24) & 0xff);
+		uart_putchar1((addr>>16) & 0xff);
+		uart_putchar1((addr>>8 ) & 0xff);
+		uart_putchar1(addr & 0xff);
+
+		uart_putchar1((chunk >> 24) & 0xff);
+		uart_putchar1((chunk>>16) & 0xff);
+		uart_putchar1((chunk>>8 ) & 0xff);
+		uart_putchar1(chunk & 0xff);
+
+		uart_putchar1(CONS);
+		uart_putchar1(ZERO);
+
+		addr+=chunk;
+		buffercam_upload(chunk+10);
+	buffercam_uartsend(chunk+10);
+	}
+	
 }
 
+void imagesize(char c)
+{
+	
+	uart_putchar1(COMMANDSEND);
+	uart_putchar1(SERIALNUM);
+	uart_putchar1(WRITE_DATA);
+	uart_putchar1(0X05);	
+	uart_putchar1(0X04);	
+	uart_putchar1(CONS);
+	uart_putchar1(ZERO);
+	uart_putchar1(0X19);	
+	uart_putchar1(RESOLUTION);
+
+	buffercam_upload(5);
+	buffercam_uartsend(5);
 
 
-
-
+}
 
 /*
 void takephotocommand(char c)

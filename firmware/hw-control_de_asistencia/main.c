@@ -3,35 +3,18 @@
 #include "cam.h"
 
 
-#define SIZE_BUFF 20
-uint32_t buffer[SIZE_BUFF];
-
-void buffer_clear()
-{
-	uint32_t i;
-    for (i=0; i< SIZE_BUFF;i++)
-    	buffer[i]=0;
-
-}
-
-void buffer_upload()
-{
-	uint32_t i;
-    for (i=0; i< SIZE_BUFF;i++)
-    	buffer[i]=uart_getchar0();
-}
-
 int main()
 {
 	uint8_t i;
+	uint32_t bytes;
+		
+    		imagesize(1);
+    		getversioncommand(1);
+		takephotocommand(1);
+		bytes=getbufflencommand();
+		readphotocommand(bytes);
+		resetcommand(1);
 
-	buffer_clear();
- 	buffer[0]=10;
-    for(;;){
-    	getversioncommand(1);
-    	for (i=0; i< SIZE_BUFF;i++)
-    	    uart_putchar0(buffer[i]+1);
-    	buffer_upload();
-    };
+   
 }
 
