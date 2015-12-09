@@ -18,25 +18,36 @@ void buffercam_clear()
 void buffercam_upload(uint32_t size)
 {
 	uint32_t i;
-    for (i=0; i< size;i++)
-    	buffercam[i]=uart_getchar1();
-}
+        for (i=0; i< size;i++)
+    	    buffercam[i]=uart_getchar1();
+}	
 
 void buffercam_uartsend(uint32_t size)
 {
 	uint32_t i;
-    for (i=0; i< size;i++)
-    	uart_putchar0(buffercam[i]);
+
+    	for (i=1; i< size;i++){
+				
+		if (buffercam[i]==0x76 && buffercam[i+1]==0x00){
+			i=i+5;
+		} 
+		
+    		uart_putchar0(buffercam[i]);
+	}
 }
 
 
 
 void resetcommand(char c){
 
+	buffercam_clear();
+
 	uart_putchar1(COMMANDSEND);
 	uart_putchar1(SERIALNUM);
 	uart_putchar1(CMD_RESET);
 	uart_putchar1(COMMANDEND);
+	buffercam_upload(71);
+//	buffercam_uartsend(71);
 }
 
 
@@ -51,13 +62,15 @@ void getversioncommand(char c)
 	uart_putchar1(COMMANDEND);
 
 	buffercam_upload(15);
-	buffercam_uartsend(15);
+	//buffercam_uartsend(15);
 }
 //take_picture
 void takephotocommand(char c)
 {
 	uint32_t x='0';	
-
+	
+	buffercam_clear();
+        
 	uart_putchar1(COMMANDSEND);
 	uart_putchar1(SERIALNUM);
 	uart_putchar1(CMD_TAKEPHOTO);
@@ -65,7 +78,7 @@ void takephotocommand(char c)
 	uart_putchar1(FBUF_STOPCURRENTFRAME);	
 
 	buffercam_upload(5);
-	buffercam_uartsend(5);
+	//buffercam_uartsend(5);
 	
 }
 //read_size,,, confirmar si tomo la foto (buf[0]==0x76 && buf[2]==0x34)
@@ -73,6 +86,9 @@ void takephotocommand(char c)
 int getbufflencommand()
 {
 	uint32_t bytes,  x='0';	
+	buffercam_clear();
+	//uart1->rxtx;
+	//msleep(30);        
 	
 	uart_putchar1(COMMANDSEND);
 	uart_putchar1(SERIALNUM);
@@ -81,7 +97,7 @@ int getbufflencommand()
 	uart_putchar1(FBUF_CURRENTFRAME);	
 
 	buffercam_upload(9);
-	buffercam_uartsend(9);
+	//buffercam_uartsend(9);
 	
 	bytes=buffercam[5];
 	bytes=bytes<<8;	
@@ -106,6 +122,7 @@ int inc = 200;
 int addr =0;
 int chunk;
 
+	buffercam_clear();	
 	
 	while( addr < bytes ){
 
@@ -132,15 +149,21 @@ int chunk;
 		uart_putchar1(ZERO);
 
 		addr+=chunk;
-		buffercam_upload(chunk+10);
-	buffercam_uartsend(chunk+10);
+		/*		
+		for (i=0; i< 5;i++){
+    	    		uart_getchar1();
+		}
+		*/
+		
+                buffercam_upload(chunk+6);
+	        buffercam_uartsend(chunk+6);
 	}
 	
 }
 
 void imagesize(char c)
 {
-	
+	buffercam_clear();
 	uart_putchar1(COMMANDSEND);
 	uart_putchar1(SERIALNUM);
 	uart_putchar1(WRITE_DATA);
@@ -152,7 +175,7 @@ void imagesize(char c)
 	uart_putchar1(RESOLUTION);
 
 	buffercam_upload(5);
-	buffercam_uartsend(5);
+	//buffercam_uartsend(5);
 
 
 }

@@ -2,10 +2,10 @@
 
 uart_t  *uart0  = (uart_t *)   0x20000000;
 timer_t *timer0 = (timer_t *)  0x30000000;
-gpio_t  *gpio0  = (gpio_t *)   0x40000000;
-uart_t  *uart1  = (uart_t *)   0x60000000;
-spi_t   *spi0   = (spi_t *)    0x50000000;
-//i2c_t   *i2c0   = (i2c_t *)    0x70000000;
+key_t	 *key0	 = (key_t *)   0x40000000;
+uart_t  *uart1  = (uart_t *)   0x60000000;  
+lcd_t	 *lcd0	 = (lcd_t *)	0x50000000;
+uart_t  *uart2  = (uart_t *)    0x70000000;
 
 isr_ptr_t isr_table[32];
 
@@ -13,13 +13,9 @@ void prueba()
 {
 	   uart0->rxtx=30;
 	   uart1->rxtx=30;
-	   spi0->rxtx=1;
-	   spi0->status=2;
-	   spi0->cs=3;
-	   spi0->divisor=4;
-	   spi0->nop=5;
 	   timer0->tcr0 = 0xAA;
-	   gpio0->ctrl=0x55;
+	   uart2->rxtx=30;
+	
 
 }
 void tic_isr();
@@ -136,6 +132,11 @@ char uart_getchar0()
 	return uart0->rxtx;
 }
 
+char uart_getchar2()
+{   
+	while (! (uart2->ucr & UART_DR)) ;
+	return uart2->rxtx;
+}
 void uart_putchar0(char c)
 {
 	while (uart0->ucr & UART_BUSY) ;
@@ -164,17 +165,28 @@ void uart_putstr1(char *str)
 		c++;
 	}
 }
-
-
-char spi_putget(char c)
+void uart_putchar2(char c)
 {
-        spi0->cs=1;
-	while (spi0->status & SPI_RUN) ;
-	spi0->rxtx = c;
-	while (spi0->status & SPI_RUN) ;
-        spi0->cs=0;
-        return spi0->rxtx;
+	while (uart2->ucr & UART_BUSY) ;
+	uart2->rxtx = c;
+}
+
+/***************************************************************************
+ * LCD Functions
+ */
+void lcd_putchar(char c)
+{
+	while (!(lcd0->RS));
+	lcd0->in_lcd = c;
 }
 
 
+
+/***************************************************************************
+ * KEY Functions
+ */
+uint32_t read_number(){
+	while (!(key0->key_av));
+	return key0->code;
+}
 

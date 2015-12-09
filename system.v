@@ -22,13 +22,24 @@ module system
 	// UART
 	input             uart_rxd, 
 	output            uart_txd,
-	// SPI
-	input             spi_miso, 
-	output            spi_mosi,
-	output            spi_clk,
 	// 12c
 	input             uart_rxd1, 
-	output            uart_txd1
+	output            uart_txd1,
+	input             uart_rxd2, 
+	output            uart_txd2,
+	// lcd
+	output		[7:0]Data_out,
+	output 		RW,  
+	output 		RS,
+	output 		E,
+	// KEY
+	output		[3:0] led_sal,
+	output		read_en,
+	output		cyc_en,
+	output		stb_en,
+	output		[3:0] led_sal2,
+	input		[2:0] JAin,
+	output		[3:0] JAout
 	
 
 );
@@ -50,13 +61,15 @@ wire  [31:0] gnd32 = 32'h00000000;
 wire [31:0]  lm32i_adr,
              lm32d_adr,
              uart0_adr,
-             spi0_adr,
              uart1_adr,
              timer0_adr,
              gpio0_adr,
              ddr0_adr,
              bram0_adr,
-             sram0_adr;
+	     uart2_adr,
+             sram0_adr,
+	     key0_adr,
+	     lcd0_adr;
 
 
 wire [31:0]  lm32i_dat_r,
@@ -65,10 +78,10 @@ wire [31:0]  lm32i_dat_r,
              lm32d_dat_w,
              uart0_dat_r,
              uart0_dat_w,
-             spi0_dat_r,
-             spi0_dat_w,
              uart1_dat_r,
              uart1_dat_w,
+             uart2_dat_r,
+             uart2_dat_w,
              timer0_dat_r,
              timer0_dat_w,
              gpio0_dat_r,
@@ -78,64 +91,80 @@ wire [31:0]  lm32i_dat_r,
              sram0_dat_w,
              sram0_dat_r,
              ddr0_dat_w,
-             ddr0_dat_r;
+             ddr0_dat_r,
+	     key0_dat_r,
+             lcd0_dat_w,
+             lcd0_dat_r;
 
 wire [3:0]   lm32i_sel,
              lm32d_sel,
              uart0_sel,
-             spi0_sel,
              uart1_sel,
+             uart2_sel,
              timer0_sel,
              gpio0_sel,
              bram0_sel,
              sram0_sel,
-             ddr0_sel;
+             ddr0_sel,
+	     key0_sel,
+             lcd0_sel;
+
 
 wire         lm32i_we,
              lm32d_we,
              uart0_we,
-             spi0_we,
              uart1_we,
+             uart2_we,
              timer0_we,
              gpio0_we,
              bram0_we,
              sram0_we,
-             ddr0_we;
+             ddr0_we,
+  	     key0_we,
+             lcd0_we;
+
 
 
 wire         lm32i_cyc,
              lm32d_cyc,
              uart0_cyc,
-             spi0_cyc,
              uart1_cyc,
+             uart2_cyc,
              timer0_cyc,
              gpio0_cyc,
              bram0_cyc,
              sram0_cyc,
-             ddr0_cyc;
+             ddr0_cyc,
+ 	     key0_cyc,
+             lcd0_cyc;
 
 
 wire         lm32i_stb,
              lm32d_stb,
              uart0_stb,
-             spi0_stb,
              uart1_stb,
+             uart2_stb,
              timer0_stb,
              gpio0_stb,
              bram0_stb,
              sram0_stb,
-             ddr0_stb;
+             ddr0_stb,
+             key0_stb,
+             lcd0_stb;
+
 
 wire         lm32i_ack,
              lm32d_ack,
              uart0_ack,
-             spi0_ack,
              uart1_ack,
+             uart2_ack,
              timer0_ack,
              gpio0_ack,
              bram0_ack,
              sram0_ack,
-             ddr0_ack;
+             ddr0_ack,
+             key0_ack,
+             lcd0_ack;
 
 
 wire         lm32i_rty,
@@ -171,9 +200,10 @@ conbus #(
 	.s0_addr(3'b000),	// bram     0x00000000 
 	.s1_addr(3'b010),	// uart0    0x20000000 
 	.s2_addr(3'b011),	// timer    0x30000000 
-	.s3_addr(3'b100),   // gpio     0x40000000 
-	.s4_addr(3'b101),	// spi      0x50000000 
-	.s5_addr(3'b110)	// uart1    0x60000000 
+	.s3_addr(3'b100),   	// Key     0x40000000 
+	.s4_addr(3'b101),	// LCD      0x50000000 
+	.s5_addr(3'b110),	// uart1    0x60000000 
+	.s6_addr(3'b111)	// uart2    0x70000000 
 ) conbus0(
 	.sys_clk( clk ),
 	.sys_rst( ~rst ),
@@ -225,23 +255,23 @@ conbus #(
 	.s2_stb_o(  timer0_stb   ),
 	.s2_ack_i(  timer0_ack   ),
 	// Slave3
-	.s3_dat_i(  gpio0_dat_r ),
-	.s3_dat_o(  gpio0_dat_w ),
-	.s3_adr_o(  gpio0_adr   ),
-	.s3_sel_o(  gpio0_sel   ),
-	.s3_we_o(   gpio0_we    ),
-	.s3_cyc_o(  gpio0_cyc   ),
-	.s3_stb_o(  gpio0_stb   ),
-	.s3_ack_i(  gpio0_ack   ),
+	.s3_dat_i(  key0_dat_r  ),
+	.s3_dat_o(  key0_dat_w  ),
+	.s3_adr_o(  key0_adr    ),
+	.s3_sel_o(  key0_sel    ),
+	.s3_we_o(   key0_we     ),
+	.s3_cyc_o(  key0_cyc    ),
+	.s3_stb_o(  key0_stb    ),
+	.s3_ack_i(  key0_ack    ),
 	// Slave4
-	.s4_dat_i(  spi0_dat_r ),
-	.s4_dat_o(  spi0_dat_w ),
-	.s4_adr_o(  spi0_adr   ),
-	.s4_sel_o(  spi0_sel   ),
-	.s4_we_o(   spi0_we    ),
-	.s4_cyc_o(  spi0_cyc   ),
-	.s4_stb_o(  spi0_stb   ),
-	.s4_ack_i(  spi0_ack   ),
+	.s4_dat_i(  lcd0_dat_r  ),
+	.s4_dat_o(   lcd0_dat_w  ),
+	.s4_adr_o(   lcd0_adr    ),
+	.s4_sel_o(  lcd0_sel    ),
+	.s4_we_o(    lcd0_we     ),
+	.s4_cyc_o(   lcd0_cyc    ),
+	.s4_stb_o(   lcd0_stb    ),
+	.s4_ack_i(   lcd0_ack    ),
 	// Slave5
 	.s5_dat_i(  uart1_dat_r ),
 	.s5_dat_o(  uart1_dat_w ),
@@ -250,7 +280,16 @@ conbus #(
 	.s5_we_o(   uart1_we    ),
 	.s5_cyc_o(  uart1_cyc   ),
 	.s5_stb_o(  uart1_stb   ),
-	.s5_ack_i(  uart1_ack   )
+	.s5_ack_i(  uart1_ack   ),
+	// Slave6
+	.s6_dat_i(  uart2_dat_r ),
+	.s6_dat_o(  uart2_dat_w ),
+	.s6_adr_o(  uart2_adr   ),
+	.s6_sel_o(  uart2_sel   ),
+	.s6_we_o(   uart2_we    ),
+	.s6_cyc_o(  uart2_cyc   ),
+	.s6_stb_o(  uart2_stb   ),
+	.s6_ack_i(  uart2_ack   )
 	
 );
 
@@ -296,7 +335,7 @@ lm32_cpu lm0 (
 // Block RAM
 //---------------------------------------------------------------------------
 wb_bram #(
-	.adr_width( 12 ),
+	.adr_width( 13 ),
 	.mem_file_name( bootram_file )
 ) bram0 (
 	.clk_i(  clk  ),
@@ -341,29 +380,6 @@ wb_uart #(
 );
 
 //---------------------------------------------------------------------------
-// spi0
-//---------------------------------------------------------------------------
-wire spi0_mosi;
-wire spi0_miso;
-wire spi0_clk;
-
-wb_spi  spi0 (
-	.clk( clk ),
-	.reset( ~rst ),
-	//
-	.wb_adr_i( spi0_adr ),
-	.wb_dat_i( spi0_dat_w ),
-	.wb_dat_o( spi0_dat_r ),
-	.wb_stb_i( spi0_stb ),
-	.wb_cyc_i( spi0_cyc ),
-	.wb_we_i(  spi0_we ),
-	.wb_sel_i( spi0_sel ),
-	.wb_ack_o( spi0_ack ), 
-	.spi_sck(spi0_clk),
-	.spi_mosi( spi0_mosi ),
-	.spi_miso( spi0_miso )
-);
-//---------------------------------------------------------------------------
 // uart1
 //---------------------------------------------------------------------------
 wire uart1_rxd;
@@ -391,24 +407,31 @@ wb_uart #(
 
 
 //---------------------------------------------------------------------------
-// timer0
+// uart2
 //---------------------------------------------------------------------------
-wb_timer #(
-	.clk_freq(   clk_freq  )
-) timer0 (
-	.clk(      clk          ),
-	.reset(    ~rst          ),
+wire uart2_rxd;
+wire uart2_txd;
+
+wb_uart #(
+	.clk_freq( clk_freq        ),
+	.baud(     uart_baud_rate  )
+) uart2 (
+	.clk( clk ),
+	.reset( ~rst ),
 	//
-	.wb_adr_i( timer0_adr   ),
-	.wb_dat_i( timer0_dat_w ),
-	.wb_dat_o( timer0_dat_r ),
-	.wb_stb_i( timer0_stb   ),
-	.wb_cyc_i( timer0_cyc   ),
-	.wb_we_i(  timer0_we    ),
-	.wb_sel_i( timer0_sel   ),
-	.wb_ack_o( timer0_ack   ), 
-	.intr(     timer0_intr  )
+	.wb_adr_i( uart2_adr ),
+	.wb_dat_i( uart2_dat_w ),
+	.wb_dat_o( uart2_dat_r ),
+	.wb_stb_i( uart2_stb ),
+	.wb_cyc_i( uart2_cyc ),
+	.wb_we_i(  uart2_we ),
+	.wb_sel_i( uart2_sel ),
+	.wb_ack_o( uart2_ack ), 
+//	.intr(       uart0_intr ),
+	.uart_rxd( uart2_rxd ),
+	.uart_txd( uart2_txd )
 );
+
 
 //---------------------------------------------------------------------------
 // General Purpose IO
@@ -432,6 +455,92 @@ wb_gpio gpio0 (
 	.gpio_io(gpio0_io)
 );
 
+
+//---------------------------------------------------------------------------
+// timer0
+//---------------------------------------------------------------------------
+wb_timer #(
+	.clk_freq(   clk_freq  )
+) timer0 (
+	.clk(      clk          ),
+	.reset(    ~rst          ),
+	//
+	.wb_adr_i( timer0_adr   ),
+	.wb_dat_i( timer0_dat_w ),
+	.wb_dat_o( timer0_dat_r ),
+	.wb_stb_i( timer0_stb   ),
+	.wb_cyc_i( timer0_cyc   ),
+	.wb_we_i(  timer0_we    ),
+	.wb_sel_i( timer0_sel   ),
+	.wb_ack_o( timer0_ack   ), 
+	.intr(     timer0_intr  )
+);
+
+
+//---------------------------------------------------------------------------
+// LCD
+//---------------------------------------------------------------------------
+
+	wire RW_11; 
+	wire [7:0] Data_out_11;
+	wire RS_11;
+	wire E_11;
+
+wb_LCD lcd0 (
+	.clk(      clk          ),
+	.reset(    ~rst          ),
+	//
+	.wb_adr_i( lcd0_adr    ),
+	.wb_dat_i( lcd0_dat_w  ),
+	.wb_dat_o( lcd0_dat_r  ),
+	.wb_stb_i( lcd0_stb    ),
+	.wb_cyc_i( lcd0_cyc    ),
+	.wb_we_i(  lcd0_we     ),
+	.wb_sel_i( lcd0_sel    ),
+	.wb_ack_o( lcd0_ack    ), 
+	// lcd
+	.Data_out_1(Data_out_11),
+	.RS_1(  RS_11    ),
+	.E_1( E_11   ),
+	.in_lcd_1(in_lcd_11),
+	.RW_1( RW_11 )
+	
+);
+
+assign Data_out = Data_out_11;
+assign RS = RS_11;
+assign E= E_11;
+assign RW= RW_11;
+assign in_lcd_1= in_lcd_11;
+
+//---------------------------------------------------------------------------
+// Key 4x4
+//---------------------------------------------------------------------------
+
+wire [3:0] JA0_out;
+wire [2:0] JA0_in;
+wire [3:0] dato_led_s;
+
+wb_key key0 (
+	.clk(      clk          ),
+	.reset(    ~rst          ),
+	//
+	.wb_adr_i( key0_adr    ),
+	.wb_dat_i( key0_dat_w  ),
+	.wb_dat_o( key0_dat_r  ),
+	.wb_stb_i( key0_stb    ),
+	.wb_cyc_i( key0_cyc    ),
+	.wb_we_i(  key0_we     ),
+	.wb_sel_i( key0_sel    ),
+	.wb_ack_o( key0_ack    ), 
+	// KEY
+	.dato_led(dato_led_s),
+	.JA_in(  JA0_in    ),
+	.JA_out( JA0_out    )
+	
+);
+
+
 //----------------------------------------------------------------------------
 // Mux UART wires according to sw[0]
 //----------------------------------------------------------------------------
@@ -442,9 +551,14 @@ assign led       = ~uart_txd;
 
 assign uart_txd1  = uart1_txd;
 assign uart1_rxd = uart_rxd1;
+assign uart_txd2  = uart2_txd;
+assign uart2_rxd = uart_rxd2;
 
-assign spi_mosi  = spi0_mosi;
-assign spi0_miso = spi_miso;
-assign spi_clk = spi0_clk;
-
+assign JAout = JA0_out;
+assign JA0_in = JAin;
+assign led_sal = dato_led_s;
+assign led_sal2 = key0_dat_r[3:0];
+assign read_en = ~key0_we; //Negado porque se lee cuando wb_we_i esta en 0
+assign cyc_en = key0_cyc;
+assign stb_en = key0_stb;
 endmodule 

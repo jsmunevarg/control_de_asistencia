@@ -102,6 +102,10 @@ void uart_putstr1(char *str);
 void uart_putchar1(char c);
 char uart_getchar1();
 
+void uart_putstr2(char *str);
+void uart_putchar2(char c);
+char uart_getchar2();
+
 /***************************************************************************
  * SPI0
  */
@@ -121,12 +125,40 @@ char spi_getchar();
 char spi_putget(char c);
 
 /***************************************************************************
+ * KEY0
+ */
+typedef struct {
+	volatile uint32_t code;
+	volatile uint32_t key_av;
+} key_t;
+
+uint32_t read_number();
+
+/***************************************************************************
+ * lcd0
+ */
+typedef struct {
+	volatile uint32_t in_lcd;
+	volatile uint32_t RS;
+} lcd_t;
+
+void lcd_putchar(char c);
+
+/***************************************************************************
  * Pointer to actual components
  */
 extern timer_t  *timer0;
 extern uart_t   *uart0;
 extern uart_t   *uart1; 
-extern gpio_t   *gpio0; 
+extern key_t	*key0;
+extern gpio_t   *gpio0;
+extern lcd_t	*lcd0;
+extern uart_t   *uart2; 
 extern uint32_t *sram0; 
+
+//buffer teclado 
+
+#define SIZE_BUFFTEC 60
+extern int buffertec[SIZE_BUFFTEC];
 
 #endif // SPIKEHW_H

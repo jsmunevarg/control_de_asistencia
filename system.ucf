@@ -8,21 +8,58 @@ TIMESPEC TS_sys_clk = PERIOD sys_clk_pin 100 MHz HIGH 50%;
 NET "rst"	LOC = "C12"	| IOSTANDARD = "LVCMOS33";
 NET "led"	LOC = "H17"	| IOSTANDARD = "LVCMOS33";
 
-
-
-
 # ==== UART ====
 NET "uart_txd"	LOC = "D4"	| IOSTANDARD = "LVCMOS33";		
-NET "uart_rxd"	LOC = "C4"	| IOSTANDARD = "LVCMOS33";			
-NET "uart_txd1"	LOC = "E18"	| IOSTANDARD = "LVCMOS33";
-NET "uart_rxd1"	LOC = "G17"	| IOSTANDARD = "LVCMOS33";	
+NET "uart_rxd"	LOC = "C4"	| IOSTANDARD = "LVCMOS33";
 
-# ==== SPI ====
-NET "spi_miso"	LOC = "D14"	| IOSTANDARD = "LVCMOS33";		
-NET "spi_mosi"	LOC = "F16"	| IOSTANDARD = "LVCMOS33";		
-NET "spi_clk"	LOC = "G16"	| IOSTANDARD = "LVCMOS33";		
+# ==== UART1_Camera <JD> ====			
+NET "uart_txd1"	LOC = "G1"	| IOSTANDARD = "LVCMOS33";
+NET "uart_rxd1"	LOC = "G3"	| IOSTANDARD = "LVCMOS33";
+
+# ==== UART2_Bluetooth <JB> ====
+NET "uart_txd2"	LOC = "G16"	| IOSTANDARD = "LVCMOS33";
+NET "uart_rxd2"	LOC = "H14"	| IOSTANDARD = "LVCMOS33";	
+
+# ==== KEY <JA> ====
+NET "JAin[0]" LOC = "C17" |IOSTANDARD = "LVCMOS33";
+NET "JAin[1]" LOC = "D18" |IOSTANDARD = "LVCMOS33";
+NET "JAin[2]" LOC = "E18" |IOSTANDARD = "LVCMOS33";
+NET "JAout[0]" LOC = "D17" |IOSTANDARD = "LVCMOS33";
+NET "JAout[1]" LOC = "E17" |IOSTANDARD = "LVCMOS33";
+NET "JAout[2]" LOC = "F18" |IOSTANDARD = "LVCMOS33";
+NET "JAout[3]" LOC = "G18" |IOSTANDARD = "LVCMOS33";
+
+NET "led_sal[0]" LOC = "T8" |IOSTANDARD = "LVCMOS33";
+NET "led_sal[1]" LOC = "V9" |IOSTANDARD = "LVCMOS33";
+NET "led_sal[2]" LOC = "R8" |IOSTANDARD = "LVCMOS33";
+NET "led_sal[3]" LOC = "T6" |IOSTANDARD = "LVCMOS33";
+NET "led_sal2[0]" LOC = "R1" |IOSTANDARD = "LVCMOS33";
+NET "led_sal2[1]" LOC = "P5" |IOSTANDARD = "LVCMOS33";
+NET "led_sal2[2]" LOC = "U1" |IOSTANDARD = "LVCMOS33";
+NET "led_sal2[3]" LOC = "R2" |IOSTANDARD = "LVCMOS33";
+NET "read_en" LOC = "V1" |IOSTANDARD = "LVCMOS33";
+NET "cyc_en" LOC = "U3" |IOSTANDARD = "LVCMOS33";
+NET "stb_en" LOC = "V4" |IOSTANDARD = "LVCMOS33";		
+
+# ==== LCD <JC> ====
+NET "Data_out[0]"          LOC=K1 | IOSTANDARD=LVCMOS33; #IO_L23N_T3_35
+NET "Data_out[1]"          LOC=F6 |IOSTANDARD=LVCMOS33;#IO_L19N_T3_VREF_35
+NET "Data_out[2]"          LOC=J2 | IOSTANDARD=LVCMOS33; #IO_L22N_T3_35
+NET "Data_out[3]"          LOC=G6 | IOSTANDARD=LVCMOS33; #IO_L19P_T3_35
+NET "Data_out[4]"          LOC=E7 | IOSTANDARD=LVCMOS33; #IO_L6P_T0_35
+NET "Data_out[5]"          LOC=J3 | IOSTANDARD=LVCMOS33; #IO_L22P_T3_35
+NET "Data_out[6]"          LOC=J4 | IOSTANDARD=LVCMOS33; #IO_L21P_T3_DQS_35
+NET "Data_out[7]"          LOC=E6 | IOSTANDARD=LVCMOS33; #IO_L5P_T0_AD13P_35
+
+# ====LCD <JD> ====
+NET "E" LOC = "H2" |IOSTANDARD = "LVCMOS33";
+NET "RS" LOC = "G4" |IOSTANDARD = "LVCMOS33";
+NET "RW" LOC = "G2" |IOSTANDARD = "LVCMOS33";
+
 
 # ==== I2C ====
 #NET "i2c_sda"	LOC = "V9"	| IOSTANDARD = "LVCMOS33";		
-#NET "i2c_clk"	LOC = "R8"	| IOSTANDARD = "LVCMOS33";		
+#NET "i2c_clk"	LOC = "R8"	| IOSTANDARD = "LVCMOS33";	
+
+	
 

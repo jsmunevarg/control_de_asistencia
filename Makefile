@@ -37,7 +37,16 @@ SRC=                                      \
 	../rtl/wb_gpio/wb_gpio.v           \
 	../rtl/wb_spi/wb_spi.v             \
 	../rtl/wb_conbus/conbus.v          \
-	../rtl/wb_conbus/conbus_arb.v      
+	../rtl/wb_conbus/conbus_arb.v      \
+	../rtl/wb_LCD/contador_E.v        \
+	../rtl/wb_LCD/contador_estado.v        \
+	../rtl/wb_LCD/LCD_MODULE.v \
+	../rtl/wb_LCD/wb_LCD.v             \
+	../rtl/wb_key/decoder_key.v        \
+	../rtl/wb_key/divisor_clk.v        \
+	../rtl/wb_key/key_top.v            \
+	../rtl/wb_key/selector_filas_key.v \
+	../rtl/wb_key/wb_key.v             
 
 #############################################################################
 # Synthesis constants
